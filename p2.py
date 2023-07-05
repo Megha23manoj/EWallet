@@ -1,0 +1,23 @@
+def num_ways_to_construct_target(words, target):
+    m, n = len(target), len(words)
+    dp = [[0] * n for _ in range(m + 1)]
+    
+    # Initialize dp[0][j] to 1, because we can always construct an empty string
+    for j in range(n):
+        dp[0][j] = 1
+    
+    # Calculate dp[i][j] for all i > 0 and j > 0
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if target[i - 1] != words[j - 1][i - 1]:
+                dp[i][j - 1] = 0
+            else:
+                dp[i][j - 1] = (dp[i - 1][j - 1] + dp[i][j - 1]) % (10**9 + 7)
+                if j > 1:
+                    dp[i][j - 1] = (dp[i][j - 1] + dp[i][j - 2]) % (10**9 + 7)
+    
+    return dp[m][n - 1]
+
+
+result = num_ways_to_construct_target(['valya','lyglb','vldoh'],'val')
+print(result)
